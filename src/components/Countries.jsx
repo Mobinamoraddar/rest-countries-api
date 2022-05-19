@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const Countries = () => {
+const Countries = ({ searchTerm }) => {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
@@ -17,22 +18,34 @@ const Countries = () => {
 
   return (
     <Grid>
-      {countries.map((country) => {
-        return (
-          <Card key={country.name}>
-            <img src={country.flag} alt="" />
-            <div>
-              <h3>{country.name}</h3>
-              <p>
-                <span>Population: </span>
-                {country.population}
-              </p>
-              <p>Region: {country.region}</p>
-              <p>Capital: {country.capital}</p>
-            </div>
-          </Card>
-        );
-      })}
+      {countries
+        .filter((country) => {
+          if (searchTerm == "") {
+            return country;
+          } else if (
+            country.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ) {
+            return country;
+          }
+        })
+        .map((country) => {
+          return (
+            <Link to={"/detail/" + country.name} key={country.name}>
+              <Card>
+                <img src={country.flag} alt="" />
+                <div>
+                  <h3>{country.name}</h3>
+                  <p>
+                    <span>Population: </span>
+                    {country.population}
+                  </p>
+                  <p>Region: {country.region}</p>
+                  <p>Capital: {country.capital}</p>
+                </div>
+              </Card>
+            </Link>
+          );
+        })}
     </Grid>
   );
 };
@@ -45,6 +58,7 @@ const Grid = styled.div`
 `;
 
 const Card = styled.div`
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   text-align: left;

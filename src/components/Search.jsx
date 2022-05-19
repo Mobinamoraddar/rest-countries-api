@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { GrSearch } from "react-icons/gr";
 
-const Search = () => {
-  const [search, setSearch] = useState("");
+const Search = ({ searchTerm, setSearchTerm }) => {
   const submitHandler = (e) => {
     e.preventDefault();
   };
-
+  console.log(searchTerm);
   return (
     <form onSubmit={submitHandler}>
       <div>
         <GrSearch />
         <input
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           type="text"
           placeholder="Search for a country..."
-          value={search}
+          value={searchTerm}
         />
       </div>
     </form>

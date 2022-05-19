@@ -1,12 +1,16 @@
-import React from "react";
+import { useState } from "react";
 import Search from "../components/Search";
 import Countries from "./../components/Countries";
 import styled from "styled-components";
+import Region from "../components/Region";
 const Home = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
   return (
     <StyledHome>
-      <Search />
-      <Countries />
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Region />
+      <Countries searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
     </StyledHome>
   );
 };

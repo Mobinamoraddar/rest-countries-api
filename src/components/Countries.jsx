@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Search from "../components/Search";
 import { Link } from "react-router-dom";
+import Pagination from "../common/Pagination";
 
-const Countries = ({ searchTerm }) => {
+const Countries = ({ theme }) => {
   const [countries, setCountries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [region, setRegion] = useState("");
+  const [filtered, setFiltered] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
 
   useEffect(() => {
     getCountries();
@@ -13,24 +20,57 @@ const Countries = ({ searchTerm }) => {
     const data = await fetch("https://restcountries.com/v2/all");
     const countriesData = await data.json();
     setCountries(countriesData);
-    console.log(countriesData);
+    setFiltered(countriesData);
   };
 
+  // const filteredRegions = region
+  //   ? countries.filter((country) => country.region === region)
+  //   : countries;
+
+  // //Get current posts
+  // const indexOfLastPost = currentPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPosts = filteredRegions.slice(indexOfFirstPost, indexOfLastPost);
+
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  //search
+
+  useEffect(() => {
+    if (region) {
+      const filteredByRegionsCountries = countries.filter(
+        (country) => country.region === region
+      );
+
+      setFiltered(filteredByRegionsCountries);
+    } else {
+      setFiltered(countries);
+    }
+  }, [region]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filteredCountries = countries.filter((country) =>
+        country.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFiltered(filteredCountries);
+    } else {
+      setFiltered(countries);
+    }
+  }, [searchTerm]);
+
   return (
-    <Grid>
-      {countries
-        .filter((country) => {
-          if (searchTerm == "") {
-            return country;
-          } else if (
-            country.name.toLowerCase().includes(searchTerm.toLowerCase())
-          ) {
-            return country;
-          }
-        })
-        .map((country) => {
+    <StyledPage>
+      <Search
+        setRegion={setRegion}
+        setSearchTerm={setSearchTerm}
+        searchTerm={searchTerm}
+        setCountries={setCountries}
+      />
+      <Grid>
+        {filtered.map((country) => {
           return (
-            <Link to={"/detail/" + country.name} key={country.name}>
+            <StyledLink to={"/detail/" + country.name} key={country.name}>
               <Card>
                 <img src={country.flag} alt="" />
                 <div>
@@ -39,21 +79,41 @@ const Countries = ({ searchTerm }) => {
                     <span>Population: </span>
                     {country.population}
                   </p>
-                  <p>Region: {country.region}</p>
-                  <p>Capital: {country.capital}</p>
+                  <p>
+                    <span>Region: </span> {country.region}
+                  </p>
+                  <p>
+                    <span>Capital: </span> {country.capital}
+                  </p>
                 </div>
               </Card>
-            </Link>
+            </StyledLink>
           );
         })}
-    </Grid>
+      </Grid>
+
+      {/* <Pagination
+        postsPerPage={postsPerPage}
+        totalCountries={filteredRegions.length}
+        paginate={paginate}
+      /> */}
+    </StyledPage>
   );
 };
-
+const StyledPage = styled.div`
+  background-color: ${(props) => props.theme.pageBackground};
+  padding: 0 60px;
+`;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${(props) => props.theme.textColor};
+`;
 const Grid = styled.div`
+  /* padding: 0 60px; */
   display: grid;
+  justify-content: space-between;
   grid-gap: 70px;
-  grid-template-columns: repeat(4, 200px);
+  grid-template-columns: repeat(4, 230px);
   width: 100%;
 `;
 
@@ -64,21 +124,37 @@ const Card = styled.div`
   text-align: left;
   ${"" /* over-flow: hidden; */}
   ${"" /* border-radius: 10px; */}
-  width: 200px;
-  height: 250px;
+  width: 230px;
+  height: 270px;
   ${"" /* margin: 20px; */}
-  -webkit-box-shadow: 0px 4px 5px -1px rgba(153, 153, 153, 0.3);
-  -moz-box-shadow: 0px 4px 5px -1px rgba(153, 153, 153, 0.3);
-  box-shadow: 0px 4px 5px -1px rgba(153, 153, 153, 0.3);
+  -webkit-box-shadow: ${(props) => props.theme.boxShadowColor};
+  -moz-box-shadow: ${(props) => props.theme.boxShadowColor};
+  box-shadow: ${(props) => props.theme.boxShadowColor};
+
   div {
-    padding: 0 20px;
-    height: 150px;
-    background-color: white;
+    padding: 20px;
+    height: 170px;
+    background-color: ${(props) => props.theme.elementsColor};
+    /* color: ${(props) => props.theme.textColor}; */
+    h3 {
+      margin-bottom: 12px;
+      /* font-size: 110%; */
+    }
+    p {
+      margin-top: 4px;
+      font-size: 13px;
+      span {
+        font-weight: 600;
+      }
+    }
   }
   img {
-    width: 200px;
-    height: 100px;
-    ${"" /* box-shadow: 0 4px 2px -2px rgba(153, 153, 153, 0.3); */}
+    width: 230px;
+    height: 120px;
+    /* overflow: hidden !important; */
+    /* background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center; */
   }
 `;
 export default Countries;

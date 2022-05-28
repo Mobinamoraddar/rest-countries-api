@@ -1,15 +1,68 @@
 import Nav from "./components/Nav";
-import Pages from "./pages/Pages";
-import "./App.css";
+import Detail from "./components/Detail";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { Routes, Route, Switch } from "react-router-dom";
+import { useState } from "react";
+import Countries from "./components/Countries";
+
+const LightTheme = {
+  pageBackground: "hsl(0, 0%, 98%)",
+  textColor: "hsl(200, 15%, 8%)",
+  inputColor: "hsl(0, 0%, 82%)",
+  elementsColor: "hsl(0, 0%, 100%)",
+  boxShadowColor: "1px 4px 5px -1px rgba(153, 153, 153, 0.3)",
+};
+const DarkTheme = {
+  pageBackground: "hsl(207, 26%, 17%)",
+  textColor: "hsl(0, 0%, 100%)",
+  inputColor: "hsl(0, 0%, 52%)", // not changed
+  elementsColor: "hsl(209, 23%, 22%)",
+  boxShadowColor: "1px 4px 5px -1px rgba(0, 0, 0, 0.3)",
+};
+const themes = {
+  light: LightTheme,
+  dark: DarkTheme,
+};
+const GlobalStyle = createGlobalStyle`
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+  width: 100vw;
+  overflow-x: hidden;
+    font-size: 14px;
+    font-family: 'Nunito Sans', sans-serif; 
+    background-color: ${(props) => props.theme.pageBackground};
+    }`;
+
 function App() {
+  const [theme, setTheme] = useState("light");
+  function changeTheme() {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }
   return (
-    <div className="App">
+    <ThemeProvider theme={themes[theme]}>
+      <GlobalStyle />
       <BrowserRouter>
-        <Nav />
-        <Pages />
+        <Nav changeTheme={changeTheme} theme={theme} setTheme={setTheme} />
+        <Routes>
+          <Route
+            theme={theme}
+            setTheme={setTheme}
+            path="/"
+            element={<Countries />}
+          />
+          <Route path="/detail/:name" element={<Detail />} />
+        </Routes>
       </BrowserRouter>
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -54,7 +54,7 @@ function App() {
       <BrowserRouter>
         <Nav changeTheme={changeTheme} theme={theme} />
         <Routes>
-          <Route path="/" element={<Countries />} />
+          <Route path="/rest-countries-api/" element={<Countries />} />
           <Route path="/detail/:name" element={<Detail />} />
         </Routes>
       </BrowserRouter>

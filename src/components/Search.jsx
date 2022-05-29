@@ -1,22 +1,29 @@
-import { useState, useEffect } from "react";
-import { GrSearch } from "react-icons/gr";
+import { BiSearch } from "react-icons/bi";
 import styled from "styled-components";
 
 const Search = ({ searchTerm, setRegion, setSearchTerm }) => {
   const submitHandler = (e) => {
     e.preventDefault();
   };
+
   return (
     <StyledForm onSubmit={submitHandler}>
-      <div>
-        <GrSearch />
+      <StyledDiv>
+        <BiSearch
+          style={{
+            position: "absolute",
+            top: "10px",
+            left: "10px",
+          }}
+          size="20px"
+        />
         <StyledInput
           onChange={(e) => setSearchTerm(e.target.value)}
           type="text"
           placeholder="Search for a country..."
           value={searchTerm}
         />
-      </div>
+      </StyledDiv>
       <StyledSelect onChange={(e) => setRegion(e.target.value)}>
         <option value="">Filter by Region</option>
         <option value="Africa">Africa</option>
@@ -28,11 +35,18 @@ const Search = ({ searchTerm, setRegion, setSearchTerm }) => {
     </StyledForm>
   );
 };
+const media = {
+  mobile: "@media(max-width:480px)",
+};
 const StyledForm = styled.form`
   margin: 40px 0;
   display: flex;
   justify-content: space-between;
   outline: none;
+  ${media.mobile} {
+    flex-direction: column;
+    margin: 15px 0;
+  }
   &:focus {
     outline: none;
   }
@@ -55,13 +69,16 @@ const StyledSelect = styled.select`
   &:focus {
     outline: none;
   }
-  & * {
-    /* color: violet; */
+  ${media.mobile} {
+    margin-top: 20px;
   }
 `;
+const StyledDiv = styled.div`
+  position: relative;
+`;
 const StyledInput = styled.input`
+  text-indent: 40px;
   border-radius: 5px;
-  /* position: relative; */
   width: 400px;
   height: 40px;
   color: ${(props) => props.theme.textColor};
@@ -73,7 +90,11 @@ const StyledInput = styled.input`
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  ${media.mobile} {
+    width: 360px;
+  }
   &::placeholder {
+    text-indent: 40px;
     color: ${(props) => props.theme.textColor};
   }
   &:focus {

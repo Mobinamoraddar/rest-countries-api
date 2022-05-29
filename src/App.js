@@ -11,20 +11,21 @@ const LightTheme = {
   textColor: "hsl(200, 15%, 8%)",
   inputColor: "hsl(0, 0%, 82%)",
   elementsColor: "hsl(0, 0%, 100%)",
-  boxShadowColor: "1px 4px 5px -1px rgba(153, 153, 153, 0.3)",
+  boxShadowColor: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
 };
 const DarkTheme = {
   pageBackground: "hsl(207, 26%, 17%)",
   textColor: "hsl(0, 0%, 100%)",
-  inputColor: "hsl(0, 0%, 52%)", // not changed
+  inputColor: "hsl(0, 0%, 52%)",
   elementsColor: "hsl(209, 23%, 22%)",
-  boxShadowColor: "1px 4px 5px -1px rgba(0, 0, 0, 0.3)",
+  boxShadowColor: "rgba(0, 0, 0, 0.3) 0px 3px 8px",
 };
 const themes = {
   light: LightTheme,
   dark: DarkTheme,
 };
 const GlobalStyle = createGlobalStyle`
+
 *{
     margin:0;
     padding: 0;
@@ -51,14 +52,9 @@ function App() {
     <ThemeProvider theme={themes[theme]}>
       <GlobalStyle />
       <BrowserRouter>
-        <Nav changeTheme={changeTheme} theme={theme} setTheme={setTheme} />
+        <Nav changeTheme={changeTheme} theme={theme} />
         <Routes>
-          <Route
-            theme={theme}
-            setTheme={setTheme}
-            path="/"
-            element={<Countries />}
-          />
+          <Route path="/" element={<Countries />} />
           <Route path="/detail/:name" element={<Detail />} />
         </Routes>
       </BrowserRouter>

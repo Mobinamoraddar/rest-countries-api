@@ -12,7 +12,6 @@ const Detail = () => {
   }, [name]);
   const getDetail = async () => {
     const data = await fetch(
-      // `https://restcountries.com/v2/name/${name}`
       `https://restcountries.com/v2/name/${name}?fullText=true`
     );
     const countryDetail = await data.json();
@@ -85,20 +84,37 @@ const Detail = () => {
     </div>
   );
 };
-
+const media = {
+  mobile: "@media(max-width:480px)",
+};
 const Container = styled.div`
   color: ${(props) => props.theme.textColor};
   width: 100vw;
   margin: 0 60px;
   display: flex;
+  ${media.mobile} {
+    margin: 0px;
+    flex-direction: column;
+    align-items: center;
+  }
   span {
     font-weight: 800;
   }
 
   /* justify-content: center; */
   img {
+    -webkit-box-shadow: ${(props) => props.theme.boxShadowColor};
+    -moz-box-shadow: ${(props) => props.theme.boxShadowColor};
+    box-shadow: ${(props) => props.theme.boxShadowColor};
     width: 500px;
+    border-radius: 2px;
     margin-right: 120px;
+    ${media.mobile} {
+      margin-right: 0px;
+      margin-bottom: 30px;
+      width: 300px;
+      height: 210px;
+    }
   }
 `;
 const Details = styled.div`
@@ -106,11 +122,23 @@ const Details = styled.div`
   h1 {
     margin-bottom: 30px;
   }
+  ${media.mobile} {
+    width: 350px;
+    margin-left: 20px;
+  }
 `;
 const DetailContent = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+  ${media.mobile} {
+    flex-direction: column;
+  }
+  div {
+    ${media.mobile} {
+      margin-bottom: 20px;
+    }
+  }
   p {
     margin-bottom: 8px;
   }
@@ -136,12 +164,17 @@ const StyledBackButton = styled.button`
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.elementsColor};
   border: none;
-  padding: 0;
+  /* padding: 0; */
   font: inherit;
   cursor: pointer;
   outline: inherit;
   p {
     margin-left: 8px;
+  }
+  ${media.mobile} {
+    font-size: 12px;
+    margin: 30px 20px;
+    height: 30px;
   }
 `;
 const BorderButton = styled.button`

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BsMoon, BsMoonFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const Nav = ({ theme, setTheme, changeTheme }) => {
+const Nav = ({ theme, changeTheme }) => {
   const icon = theme === "light" ? <BsMoon /> : <BsMoonFill />;
   return (
     <StyledNav>
@@ -18,6 +18,9 @@ const Nav = ({ theme, setTheme, changeTheme }) => {
   );
 };
 
+const media = {
+  mobile: "@media(max-width:480px)",
+};
 const StyledNav = styled.div`
   background-color: ${(props) => props.theme.elementsColor};
   padding: 0 60px;
@@ -29,10 +32,16 @@ const StyledNav = styled.div`
   -webkit-box-shadow: ${(props) => props.theme.boxShadowColor};
   -moz-box-shadow: ${(props) => props.theme.boxShadowColor};
   box-shadow: ${(props) => props.theme.boxShadowColor};
+  ${media.mobile} {
+    padding: 0 10px;
+  }
 `;
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${(props) => props.theme.textColor};
+  ${media.mobile} {
+    font-size: 10px;
+  }
 `;
 const StyledButton = styled.button`
   margin-left: 8px;

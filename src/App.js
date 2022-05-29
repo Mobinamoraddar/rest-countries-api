@@ -48,10 +48,11 @@ function App() {
       setTheme("light");
     }
   }
+
   return (
     <ThemeProvider theme={themes[theme]}>
       <GlobalStyle />
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Nav changeTheme={changeTheme} theme={theme} />
         <Routes>
           <Route path="/" element={<Countries />} />

@@ -1,8 +1,7 @@
 import Nav from "./components/Nav";
 import Detail from "./components/Detail";
-import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { Routes, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Countries from "./components/Countries";
 
@@ -52,13 +51,12 @@ function App() {
   return (
     <ThemeProvider theme={themes[theme]}>
       <GlobalStyle />
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Nav changeTheme={changeTheme} theme={theme} />
-        <Routes>
-          <Route path="/" element={<Countries />} />
-          <Route path="/detail/:name" element={<Detail />} />
-        </Routes>
-      </BrowserRouter>
+
+      <Nav changeTheme={changeTheme} theme={theme} />
+      <Routes>
+        <Route path="/" element={<Countries />} />
+        <Route path="/detail/:name" element={<Detail />} />
+      </Routes>
     </ThemeProvider>
   );
 }
